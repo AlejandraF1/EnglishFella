@@ -5,10 +5,21 @@
   </head>
   <body>
     <h1>Sinónimos</h1>
-    <ul>
-      {% for synonym in synonyms %}
-        <li>{{ synonym }}</li>
-      {% endfor %}
-    </ul>
+    {% if show_results %}
+    <div class="search-bar">
+      <!-- barra de búsqueda -->
+    </div>
+    
+    <div class="spacer"></div>
+    
+    <div class="result-box">
+      <!-- contenido de la caja de respuesta -->
+      <ul>
+        {% for synonym in synonyms %}
+        <li>&hearts; {{ synonym }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
   </body>
 </html>

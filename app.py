@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import nltk
 from nltk.corpus import wordnet
 
@@ -21,7 +21,13 @@ def index():
 def get_synonyms():
     user_input = request.form['user_input']
     synonyms = chatbot_synonyms(user_input)
-    return render_template('synonyms.html', synonyms=synonyms)
+    return render_template('synonyms.html', synonyms=synonyms, show_results=True)
+
+@app.route('/api/search', methods=['GET'])
+def search():
+    search_query = request.args.get('q')
+    synonyms = chatbot_synonyms(search_query)
+    return jsonify(synonyms)
 
 if __name__ == '__main__':
     app.run(debug=True)

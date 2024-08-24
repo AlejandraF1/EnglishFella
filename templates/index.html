@@ -81,13 +81,6 @@
             color: #666;
             margin-bottom: 10px;
         }
-
-        .result::before {
-            content: "\2705"; /* Agregamos un ícono de flor */
-            font-size: 18px;
-            color: #8bc34a; /* Verde pastel */
-            margin-right: 10px;
-        }
     </style>
 </head>
 <body>
@@ -96,49 +89,58 @@
         <p class="welcome-message">
             Hola soy EnglishFella y te ayudaré en tu proceso de aprendizaje del idioma inglés. <br><br>
             Conmigo puedes encontrar los sinónimos de las palabras que no entiendes en inglés, ya sea tradicional o moderno, así también como los números. <br><br>
-            Por ejemplo busca: 100 o Fudgel
+            Por ejemplo busca: 100
         </p>
         <input type="text" class="search-input" placeholder="Buscar...">
         <button class="search-button">Buscar</button>
         <div class="results-container">
             <!-- Aquí se mostrarán los resultados -->
-            <div class="result">Resultado 1</div>
-            <div class="result">Resultado 2</div
-              <div class="result">Resultado 3</div>
-            </div>
+            {% if show_results %}
+            <ul>
+                {% for result in results %}
+                <li><span style="color: #df9edf; font-size: 18px;">&hearts;</span> {{ result }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
     
             <script>
                 // Agregamos un evento de click al botón de búsqueda
                 document.querySelector('.search-button').addEventListener('click', function() {
                     // Obtenemos el valor de la caja de texto de búsqueda
                     var searchValue = document.querySelector('.search-input').value.trim();
-    
+
                     // Verificamos si el valor de búsqueda no está vacío
                     if (searchValue !== '') {
                         // Realizamos una petición AJAX para obtener los resultados de búsqueda
                         var xhr = new XMLHttpRequest();
-                        xhr.open('GET', 'https://example.com/search?q=' + searchValue, true);
+                        xhr.open('GET', '/api/search?q=' + searchValue, true);
                         xhr.onload = function() {
-                            if (xhr.status === 200) {
-                                // Procesamos los resultados de búsqueda
-                                var results = JSON.parse(xhr.responseText);
-                                var resultsContainer = document.querySelector('.results-container');
-                                resultsContainer.innerHTML = '';
-    
+                        if (xhr.status === 200) {
+                            // Procesamos los resultados de búsqueda
+                            var results = JSON.parse(xhr.responseText);
+                            var resultsContainer = document.querySelector('.results-container');
+                            resultsContainer.innerHTML = '';
+
+                            if (results.length === 0) {
+                                // Mostramos el mensaje de error si no hay resultados
+                                resultsContainer.innerHTML = '<p style="color: #9c27b0;">Lo siento, esa palabra no está en mi base de datos :c</p>';
+                            } else {
                                 // Mostramos los resultados de búsqueda
                                 results.forEach(function(result) {
-                                    var resultHTML = '<div class="result">' + result + '</div>';
-                                    resultsContainer.innerHTML += resultHTML;
+                                var resultHTML = '<li><span style="color: #df9edf; font-size: 18px;">&hearts;</span> ' + result + '</li>';
+                                resultsContainer.innerHTML += resultHTML;
                                 });
-                            } else {
-                                console.error('Error al realizar la petición AJAX:', xhr.status);
                             }
-                        };
-                        xhr.send();
-                    } else {
-                        alert('Por favor, ingresa un valor de búsqueda');
-                    }
-                });
+                        } else {
+                            console.error('Error al realizar la petición AJAX:', xhr.status);
+                        }
+                    };
+                    xhr.send();
+                } else {
+                    alert('Por favor, ingresa un valor de búsqueda');
+                }
+            });
             </script>
         </div>
     </body>
