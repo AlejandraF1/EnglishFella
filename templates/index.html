@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnglishFella</title>
+    <style>
+        /* CSS aquí */
+        body {
+            font-family: Arial, sans-serif; /* Tipografía Arial */
+            background-color: #f7f7f7; /* Fondo claro */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px; /* Caja de texto cuadrada */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #8bc34a; /* Verde pastel */
+        }
+
+        .welcome-message {
+            font-size: 18px;
+            color: #9c27b0; /* Morado pastel */
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 70%; /* Reducimos el ancho de la caja de texto */
+            height: 30px; /* Reducimos la altura de la caja de texto */
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #ffc5c5; /* Rosa pastel claro */
+            border-radius: 10px; /* Caja de texto cuadrada */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fce4ec; /* Rosa pastel */
+            float: left; /* Flotamos la caja de texto a la izquierda */
+        }
+
+        .search-input:focus {
+            border-color: #ff99cc; /* Rosa pastel oscuro */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-button {
+            background-color: #8bc34a; /* Verde pastel */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 10px; /* Botón redondeado */
+            float: right; /* Flotamos el botón a la derecha */
+            margin-left: 10px; /* Agregamos un margen a la izquierda */
+        }
+
+        .search-button:hover {
+            background-color: #64bd3f; /* Verde pastel oscuro */
+        }
+
+        .results-container {
+            clear: both; /* Limpiamos los flotados */
+            margin-top: 20px; /* Agregamos un margen superior */
+            padding: 10px;
+            background-color: #f7f7f7; /* Fondo claro */
+            border: 1px solid #ddd;
+            border-radius: 10px; /* Caja de texto cuadrada */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .result {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .result::before {
+            content: "\2705"; /* Agregamos un ícono de flor */
+            font-size: 18px;
+            color: #8bc34a; /* Verde pastel */
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Hola soy EnglishFella</h1>
+        <p class="welcome-message">
+            Hola soy EnglishFella y te ayudaré en tu proceso de aprendizaje del idioma inglés. <br><br>
+            Conmigo puedes encontrar los sinónimos de las palabras que no entiendes en inglés, ya sea tradicional o moderno, así también como los números. <br><br>
+            Por ejemplo busca: 100 o Fudgel
+        </p>
+        <input type="text" class="search-input" placeholder="Buscar...">
+        <button class="search-button">Buscar</button>
+        <div class="results-container">
+            <!-- Aquí se mostrarán los resultados -->
+            <div class="result">Resultado 1</div>
+            <div class="result">Resultado 2</div
+              <div class="result">Resultado 3</div>
+            </div>
+    
+            <script>
+                // Agregamos un evento de click al botón de búsqueda
+                document.querySelector('.search-button').addEventListener('click', function() {
+                    // Obtenemos el valor de la caja de texto de búsqueda
+                    var searchValue = document.querySelector('.search-input').value.trim();
+    
+                    // Verificamos si el valor de búsqueda no está vacío
+                    if (searchValue !== '') {
+                        // Realizamos una petición AJAX para obtener los resultados de búsqueda
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('GET', 'https://example.com/search?q=' + searchValue, true);
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                // Procesamos los resultados de búsqueda
+                                var results = JSON.parse(xhr.responseText);
+                                var resultsContainer = document.querySelector('.results-container');
+                                resultsContainer.innerHTML = '';
+    
+                                // Mostramos los resultados de búsqueda
+                                results.forEach(function(result) {
+                                    var resultHTML = '<div class="result">' + result + '</div>';
+                                    resultsContainer.innerHTML += resultHTML;
+                                });
+                            } else {
+                                console.error('Error al realizar la petición AJAX:', xhr.status);
+                            }
+                        };
+                        xhr.send();
+                    } else {
+                        alert('Por favor, ingresa un valor de búsqueda');
+                    }
+                });
+            </script>
+        </div>
+    </body>
+    </html>

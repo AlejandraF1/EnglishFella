@@ -1,0 +1,35 @@
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+#Modelo de lenguaje español
+# Cargar el corpus de stopwords en español
+nltk.download('stopwords')
+stop_words = set(stopwords.words('spanish'))
+
+# Crear un modelo de lenguaje
+vectorizer = TfidfVectorizer(stop_words=stop_words)
+
+# Cargar un conjunto de datos de sinónimos
+synonyms_data = [...];  # Aquí debes cargar tus datos de sinónimos
+
+# Entrenar el modelo de lenguaje
+vectorizer.fit(synonyms_data)
+
+#Función de interación del usuario
+def chatbot_synonyms(user_input):
+    # Tokenizar la entrada del usuario
+    tokens = word_tokenize(user_input)
+
+    # Eliminar stopwords
+    tokens = [token for token in tokens if token not in stop_words]
+
+    # Convertir la entrada del usuario en un vector de características
+    user_vector = vectorizer.transform([' '.join(tokens)])
+
+    # Buscar sinónimos en el conjunto de datos
+    synonyms = [...];  # Aquí debes buscar sinónimos en tus datos
+
+    # Devolver la respuesta del chatbot
+    return 'Los sinónimos de "{}" son: {}'.format(user_input, ', '.join(synonyms))
